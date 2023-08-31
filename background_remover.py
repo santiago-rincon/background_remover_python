@@ -79,15 +79,17 @@ def ctrl_c (sig, frame):
 # Control C 
 signal.signal(signal.SIGINT, ctrl_c)
 
-# Banner 
-print(Fore.YELLOW + pyfiglet.figlet_format("Background remover"))
-
 # Arguments
 parser = argparse.ArgumentParser(prog='Background remover for images',usage=Fore.BLUE + '\npython background_remover.py -i[--input] <example.png> -o[--output] <example_output.png>.\nFor more information:\npython background_remover.py -h[--help]',description=Fore.GREEN + f'This program removes the background from the image, formats allowed: {ALLOWED_FORMATS}' + Fore.YELLOW, epilog=Fore.MAGENTA + '[!] Program create by Cristian Santiago Rincón',)
-parser.add_argument('-i', '--input', help = Fore.CYAN + 'Path to the input image. If you do not specify an input image, all images in the current folder will be taken.' + Fore.YELLOW, required = True, type = str, metavar = 'example.png')
-parser.add_argument('-o', '--output', help = Fore.CYAN + 'Path to the output image or path to the folder where the output images will be saved. If you do not specify the parameter, the image(s) will be saved in the current working directory. If the path contains a folder that does not exist on the system, it will be created. The output image extension must be \"png\", otherwise it will be changed. If it does not contain an extension it will be considered as a folder.', required = False, default = pwd, type = str, metavar = 'example_output.png')
+parser.add_argument('-i', '--input', help = Fore.CYAN + 'Path to the input image. If you do not specify an input image, all images in the current folder will be taken.' + Fore.YELLOW, required = True, type = str)
+parser.add_argument('-o', '--output', help = Fore.CYAN + 'Path to the output image or path to the folder where the output images will be saved. If you do not specify the parameter, the image(s) will be saved in the current working directory. If the path contains a folder that does not exist on the system, it will be created. The output image extension must be \"png\", otherwise it will be changed. If it does not contain an extension it will be considered as a folder.' + Fore.YELLOW, required = False, default = pwd, type = str)
+parser.add_argument('-n', '--no-banner', help = Fore.CYAN + 'Dont show the banner', required = False, action='store_true' )
 args = parser.parse_args()
 input_path,output_path  = args.input,args.output
+
+# Banner 
+if not args.no_banner:
+    print(Fore.YELLOW + pyfiglet.figlet_format("Background remover"))
 
 # Absolute paths
 input_path = absolute_path(input_path)
